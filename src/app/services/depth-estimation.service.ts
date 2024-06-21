@@ -11,10 +11,10 @@ export class DepthEstimationService {
   private statusSubject = new BehaviorSubject<string>('');
   status$ = this.statusSubject.asObservable();
 
-  camera!: THREE.PerspectiveCamera;  // Definite assignment assertion
-  controls!: OrbitControls;          // Definite assignment assertion
-  onSliderChange!: (value: number) => void; // Definite assignment assertion
-  animationId: number | null = null;  // Initialize with null
+  camera!: THREE.PerspectiveCamera;
+  controls!: OrbitControls;
+  onSliderChange!: (value: number) => void;
+  animationId: number | null = null;
 
   constructor() {
     env.allowLocalModels = false;
@@ -22,12 +22,15 @@ export class DepthEstimationService {
   }
 
   async predictFromUrl(url: string) {
+    const container = document.getElementById('container');
+    if (!container) return;
+
+    this.displayImage(url);
     this.setStatus('Loading model...');
     const depthEstimator = await pipeline('depth-estimation', 'Xenova/depth-anything-small-hf');
     this.setStatus('Ready');
 
     const image = await RawImage.fromURL(url);
-    this.displayImage(url);
     await this.setupScene(url, image.width, image.height, depthEstimator, image);
   }
 
