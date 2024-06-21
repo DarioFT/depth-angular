@@ -10,6 +10,8 @@ import { pipeline, env, RawImage } from '@xenova/transformers';
 export class DepthEstimationService {
   private statusSubject = new BehaviorSubject<string>('');
   status$ = this.statusSubject.asObservable();
+  private isProcessingSubject = new BehaviorSubject<boolean>(false);
+  isProcessing$ = this.isProcessingSubject.asObservable();
 
   camera!: THREE.PerspectiveCamera;
   controls!: OrbitControls;
@@ -22,9 +24,7 @@ export class DepthEstimationService {
   }
 
   async predictFromUrl(url: string) {
-    const container = document.getElementById('container');
-    if (!container) return;
-
+    this.setProcessing(true);
     this.displayImage(url);
     this.setStatus('Loading model...');
     const depthEstimator = await pipeline('depth-estimation', 'Xenova/depth-anything-small-hf');
@@ -32,7 +32,7 @@ export class DepthEstimationService {
 
     const image = await RawImage.fromURL(url);
     await this.setupScene(url, image.width, image.height, depthEstimator, image);
-  }
+    }
 
   predictFromFile(file: File) {
     const reader = new FileReader();
@@ -45,6 +45,10 @@ export class DepthEstimationService {
 
   private setStatus(status: string) {
     this.statusSubject.next(status);
+  }
+
+  private setProcessing(isProcessing: boolean) {
+    this.isProcessingSubject.next(isProcessing);
   }
 
   private displayImage(url: string) {

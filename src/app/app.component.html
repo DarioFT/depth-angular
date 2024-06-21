@@ -1,5 +1,7 @@
 <div>
-  <app-image-upload></app-image-upload>
-  <app-depth-estimation></app-depth-estimation>
+  <div *ngIf="!(isProcessing$ | async)">
+    <app-image-upload></app-image-upload>
+  </div>
+  <app-depth-estimation *ngIf="isProcessing$ | async"></app-depth-estimation>
   <app-preset-menu></app-preset-menu>
 </div>
