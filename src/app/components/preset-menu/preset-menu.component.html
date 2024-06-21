@@ -21,33 +21,47 @@
       <button mat-button (click)="startMovement('leftRight')">
         <span><mat-icon svgIcon="horizontal"></mat-icon></span> Horizontal
       </button>
-      <button mat-button (click)="startMovement('circular')">
+      <button mat-button (click)="startMovement('circular')" [disabled]="true">
         <span><mat-icon svgIcon="circular"></mat-icon></span> Circle
       </button>
-      <button mat-button (click)="startMovement('perspective')">
+      <button mat-button (click)="startMovement('perspective')" [disabled]="true">
         <span><mat-icon svgIcon="perspective"></mat-icon></span> Perspective
       </button>
-      <button mat-button (click)="startMovement('zoom')">
+      <button mat-button (click)="startMovement('zoom')" [disabled]="true">
         <span><mat-icon svgIcon="zoom"></mat-icon></span> Zoom
       </button>
-      <button mat-button (click)="startMovement('dolly')">
+      <button mat-button (click)="startMovement('dolly')" [disabled]="true">
         <span><mat-icon svgIcon="dolly"></mat-icon></span> Dolly
       </button>
-      <button mat-button (click)="startMovement('zoomLeft')">
+      <button mat-button (click)="startMovement('zoomLeft')" [disabled]="true">
         <span><mat-icon svgIcon="zoomLeft"></mat-icon></span> Zoom Left
       </button>
-      <button mat-button (click)="startMovement('zoomCenter')">
+      <button mat-button (click)="startMovement('zoomCenter')" [disabled]="true">
         <span><mat-icon svgIcon="zoomCenter"></mat-icon></span> Zoom Center
       </button>
-      <button mat-button (click)="startMovement('zoomRight')">
+      <button mat-button (click)="startMovement('zoomRight')" [disabled]="true">
         <span><mat-icon svgIcon="zoomRight"></mat-icon></span> Zoom Right
       </button>
-      <!--<button mat-button (click)="startMovement('custom')">
+      <button mat-button (click)="startMovement('custom')" [disabled]="true">
         <span><mat-icon svgIcon="custom"></mat-icon></span> Custom
-      </button>-->
+      </button>
     </div>
   </mat-expansion-panel>
 
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span><mat-icon svgIcon="zoom"></mat-icon></span>
+        Displacement
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>
+      <mat-slider min="0" max="2" step="0.01">
+        <input matSliderThumb [(ngModel)]="displacementScale" name="displacementScale" (ngModelChange)="onDisplacementScaleChange($event)">
+      </mat-slider>
+    </div>
+  </mat-expansion-panel>
+  
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -55,7 +69,7 @@
         Amount of Motion
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-slider min="0" max="100" step="1">
+    <mat-slider min="0" max="100" step="1" [disabled]="true">
       <input matSliderThumb [(ngModel)]="motionAmount" name="motionAmount">
     </mat-slider>
   </mat-expansion-panel>
@@ -67,7 +81,7 @@
         Animation Length
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-slider min="0" max="10" step="1">
+    <mat-slider min="0" max="10" step="1" [disabled]="true">
       <input matSliderThumb [(ngModel)]="animationLength" name="animationLength">
     </mat-slider>
   </mat-expansion-panel>
@@ -79,8 +93,8 @@
         Focus Point
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <button mat-button>Set Focus Point</button>
-    <mat-slider min="0" max="100" step="1">
+    <button mat-button [disabled]="true">Set Focus Point</button>
+    <mat-slider min="0" max="100" step="1" [disabled]="true">
       <input matSliderThumb [(ngModel)]="focusPoint" name="focusPoint">
     </mat-slider>
   </mat-expansion-panel>
@@ -92,7 +106,7 @@
         Edge Dilation
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-slider min="0" max="100" step="1">
+    <mat-slider min="0" max="100" step="1" [disabled]="true">
       <input matSliderThumb [(ngModel)]="edgeDilation" name="edgeDilation">
     </mat-slider>
   </mat-expansion-panel>

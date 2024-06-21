@@ -15,9 +15,9 @@ export class DepthEstimationService {
 
   camera!: THREE.PerspectiveCamera;
   controls!: OrbitControls;
-  onSliderChange!: (value: number) => void;
   animationId: number | null = null;
 
+  onDisplacementScaleChange!: (value: number) => void;
   private motionAmount = 40;
   private animationLength = 4;
   private focusPoint = 50;
@@ -32,7 +32,6 @@ export class DepthEstimationService {
   }
 
   async predictFromUrl(url: string) {
-    this.setProcessing(true);
     this.displayImage(url);
     this.setStatus('Loading model...');
     const depthEstimator = await pipeline(
@@ -40,6 +39,8 @@ export class DepthEstimationService {
       'Xenova/depth-anything-small-hf'
     );
     this.setStatus('Ready');
+    
+    this.setProcessing(true);
 
     const image = await RawImage.fromURL(url);
     await this.setupScene(
@@ -76,7 +77,7 @@ export class DepthEstimationService {
     const container = document.getElementById('container');
     if (!container) return;
 
-    container.innerHTML = ''; // Clear previous content
+    container.innerHTML = '';
     const img = document.createElement('img');
     img.src = url;
     img.style.width = '100%';
@@ -96,7 +97,7 @@ export class DepthEstimationService {
     const container = document.getElementById('container');
     if (!container) return;
 
-    container.innerHTML = ''; // Clear the image
+    container.innerHTML = '';
 
     const canvas = document.createElement('canvas');
     const width = container.offsetWidth;
@@ -111,7 +112,7 @@ export class DepthEstimationService {
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    const light = new THREE.AmbientLight(0xffffff, 2);
+    const light = new THREE.AmbientLight(0xffffff, 3);
     scene.add(light);
 
     const texture = new THREE.TextureLoader().load(url);
@@ -131,7 +132,7 @@ export class DepthEstimationService {
       material.displacementScale = scale;
       material.needsUpdate = true;
     };
-    this.onSliderChange = setDisplacementScale;
+    this.onDisplacementScaleChange = setDisplacementScale;
 
     const [pw, ph] = w > h ? [1, h / w] : [w / h, 1];
     const geometry = new THREE.PlaneGeometry(pw, ph, w, h);
@@ -235,21 +236,21 @@ export class DepthEstimationService {
 
   setMotionAmount(value: number) {
     this.motionAmount = value;
-    // Add logic to update the motion amount in your application
+    // Add logic
   }
 
   setAnimationLength(value: number) {
     this.animationLength = value;
-    // Add logic to update the animation length in your application
+    // Add logic
   }
 
   setFocusPoint(value: number) {
     this.focusPoint = value;
-    // Add logic to update the focus point in your application
+    // Add logic
   }
 
   setEdgeDilation(value: number) {
     this.edgeDilation = value;
-    // Add logic to update the edge dilation in your application
+    // Add logic
   }
 }

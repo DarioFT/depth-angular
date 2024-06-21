@@ -13,6 +13,7 @@ export const customIcons: CustomIcon[] = [
   { svg: 'zoomLeft', path: 'assets/icons/zoomLeft.svg' },
   { svg: 'zoomCenter', path: 'assets/icons/zoomCenter.svg' },
   { svg: 'zoomRight', path: 'assets/icons/zoomRight.svg' },
+  { svg: 'custom', path: 'assets/icons/custom.svg' },
   { svg: 'amountOfMotion', path: 'assets/icons/amountOfMotion.svg' },
   { svg: 'animationLength', path: 'assets/icons/animationLength.svg' },
   { svg: 'focusPoint', path: 'assets/icons/focusPoint.svg' },

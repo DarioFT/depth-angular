@@ -5,7 +5,7 @@
     </div>
     <app-depth-estimation *ngIf="isProcessing$ | async"></app-depth-estimation>
   </div>
-  <div class="sidebar">
+  <div class="sidebar" *ngIf="isProcessing$ | async">
     <app-preset-menu></app-preset-menu>
   </div>
 </div>

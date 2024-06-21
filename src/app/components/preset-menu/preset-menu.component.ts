@@ -30,6 +30,8 @@ export class PresetMenuComponent {
   animationLength: number = 4;
   focusPoint: number = 50;
   edgeDilation: number = 0;
+  displacementScale: number = 0.75; // Add this property
+
 
   constructor(
     private depthEstimationService: DepthEstimationService,
@@ -46,5 +48,25 @@ export class PresetMenuComponent {
 
   startMovement(preset: string) {
     this.depthEstimationService.startCameraMovement(preset);
+  }
+
+  onDisplacementScaleChange(value: number) {
+    this.depthEstimationService.onDisplacementScaleChange(value);
+  }
+
+  onMotionAmountChange(value: number) {
+    this.depthEstimationService.setMotionAmount(value);
+  }
+
+  onAnimationLengthChange(value: number) {
+    this.depthEstimationService.setAnimationLength(value);
+  }
+
+  onFocusPointChange(value: number) {
+    this.depthEstimationService.setFocusPoint(value);
+  }
+
+  onEdgeDilationChange(value: number) {
+    this.depthEstimationService.setEdgeDilation(value);
   }
 }
