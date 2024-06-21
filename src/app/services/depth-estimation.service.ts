@@ -21,7 +21,7 @@ export class DepthEstimationService {
   onAnimationLengthChange!: (value: number) => void;
 
   private motionAmount = 40;
-  private animationLength = 4;
+  private animationLength = 3;
   private focusPoint = 50;
   private edgeDilation = 0;
 
@@ -201,7 +201,7 @@ export class DepthEstimationService {
     let start: number | null = null;
     const step = (timestamp: number) => {
       if (!start) start = timestamp;
-      const progress = (timestamp - start) / (1000 * this.animationLength);
+      const progress = (timestamp - start) / (1000 * Math.log10(this.animationLength + 1));
       motionFunction(progress);
       this.animationId = requestAnimationFrame(step);
     };
