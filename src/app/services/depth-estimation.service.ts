@@ -23,6 +23,9 @@ export class DepthEstimationService {
   private focusPoint = 50;
   private edgeDilation = 0;
 
+  private imageDimensionsSource = new BehaviorSubject<{ width: number, height: number }>({ width: 0, height: 0 });
+  imageDimensions$ = this.imageDimensionsSource.asObservable();
+
   constructor() {
     env.allowLocalModels = false;
     env.backends.onnx.wasm.proxy = true;
@@ -55,6 +58,10 @@ export class DepthEstimationService {
       await this.predictFromUrl(url);
     };
     reader.readAsDataURL(file);
+  }
+
+  updateImageDimensions(dimensions: { width: number, height: number }): void {
+    this.imageDimensionsSource.next(dimensions);
   }
 
   private setStatus(status: string) {
