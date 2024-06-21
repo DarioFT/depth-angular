@@ -2,17 +2,98 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
+        <span><mat-icon svgIcon="animationStyle"></mat-icon></span>
         Animation Style
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div>
-      <button mat-button (click)="startMovement('upDown')">Up Down</button>
-      <button mat-button (click)="startMovement('leftRight')">Left Right</button>
-      <button mat-button (click)="startMovement('circular')">Circular</button>
-      <button mat-button (click)="startMovement('dolly')">Dolly</button>
+    <div class="toggle-container">
+      <span>Loop</span>
+      <mat-slide-toggle></mat-slide-toggle>
+    </div>
+    <div class="toggle-container">
+      <span>Reverse</span>
+      <mat-slide-toggle></mat-slide-toggle>
+    </div>
+    <div class="preset-buttons">
+      <button mat-button (click)="startMovement('upDown')">
+        <span><mat-icon svgIcon="vertical"></mat-icon> </span>Vertical
+      </button>
+      <button mat-button (click)="startMovement('leftRight')">
+        <span><mat-icon svgIcon="horizontal"></mat-icon></span> Horizontal
+      </button>
+      <button mat-button (click)="startMovement('circular')">
+        <span><mat-icon svgIcon="circular"></mat-icon></span> Circle
+      </button>
+      <button mat-button (click)="startMovement('perspective')">
+        <span><mat-icon svgIcon="perspective"></mat-icon></span> Perspective
+      </button>
+      <button mat-button (click)="startMovement('zoom')">
+        <span><mat-icon svgIcon="zoom"></mat-icon></span> Zoom
+      </button>
+      <button mat-button (click)="startMovement('dolly')">
+        <span><mat-icon svgIcon="dolly"></mat-icon></span> Dolly
+      </button>
+      <button mat-button (click)="startMovement('zoomLeft')">
+        <span><mat-icon svgIcon="zoomLeft"></mat-icon></span> Zoom Left
+      </button>
+      <button mat-button (click)="startMovement('zoomCenter')">
+        <span><mat-icon svgIcon="zoomCenter"></mat-icon></span> Zoom Center
+      </button>
+      <button mat-button (click)="startMovement('zoomRight')">
+        <span><mat-icon svgIcon="zoomRight"></mat-icon></span> Zoom Right
+      </button>
+      <!--<button mat-button (click)="startMovement('custom')">
+        <span><mat-icon svgIcon="custom"></mat-icon></span> Custom
+      </button>-->
     </div>
   </mat-expansion-panel>
 
-  <!-- Add more panels as needed -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span><mat-icon svgIcon="amountOfMotion"></mat-icon></span>
+        Amount of Motion
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-slider min="0" max="100" step="1">
+      <input matSliderThumb [(ngModel)]="motionAmount" name="motionAmount">
+    </mat-slider>
+  </mat-expansion-panel>
 
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span><mat-icon svgIcon="animationLength"></mat-icon></span>
+        Animation Length
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-slider min="0" max="10" step="1">
+      <input matSliderThumb [(ngModel)]="animationLength" name="animationLength">
+    </mat-slider>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span><mat-icon svgIcon="focusPoint"></mat-icon></span>
+        Focus Point
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <button mat-button>Set Focus Point</button>
+    <mat-slider min="0" max="100" step="1">
+      <input matSliderThumb [(ngModel)]="focusPoint" name="focusPoint">
+    </mat-slider>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span><mat-icon svgIcon="edgeDilation"></mat-icon></span>
+        Edge Dilation
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-slider min="0" max="100" step="1">
+      <input matSliderThumb [(ngModel)]="edgeDilation" name="edgeDilation">
+    </mat-slider>
+  </mat-expansion-panel>
 </mat-accordion>

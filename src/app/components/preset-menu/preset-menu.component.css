@@ -1,20 +1,33 @@
-mat-expansion-panel {
-  background: #444; /* Adjust the color as needed */
-  color: #fff;
-}
-
-mat-expansion-panel-header {
-  color: #fff;
+.preset-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 button {
-  display: block;
-  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  color: #fff;
-  background-color: #555; /* Adjust the color as needed */
+  height: 100%;
+  color: white;
+  background-color: #d3d3d3;
 }
 
 button:hover {
-  background-color: #777; /* Adjust the color as needed */
+  background-color: #777;
+}
+
+mat-slide-toggle {
+  display: block;
+  margin: 10px 0;
+}
+
+mat-slider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.icon {
+  margin-right: 5px;
 }

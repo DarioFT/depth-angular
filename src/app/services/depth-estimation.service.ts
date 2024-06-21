@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { pipeline, env, RawImage } from '@xenova/transformers';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DepthEstimationService {
   private statusSubject = new BehaviorSubject<string>('');
@@ -18,6 +18,11 @@ export class DepthEstimationService {
   onSliderChange!: (value: number) => void;
   animationId: number | null = null;
 
+  private motionAmount = 40;
+  private animationLength = 4;
+  private focusPoint = 50;
+  private edgeDilation = 0;
+
   constructor() {
     env.allowLocalModels = false;
     env.backends.onnx.wasm.proxy = true;
@@ -27,12 +32,21 @@ export class DepthEstimationService {
     this.setProcessing(true);
     this.displayImage(url);
     this.setStatus('Loading model...');
-    const depthEstimator = await pipeline('depth-estimation', 'Xenova/depth-anything-small-hf');
+    const depthEstimator = await pipeline(
+      'depth-estimation',
+      'Xenova/depth-anything-small-hf'
+    );
     this.setStatus('Ready');
 
     const image = await RawImage.fromURL(url);
-    await this.setupScene(url, image.width, image.height, depthEstimator, image);
-    }
+    await this.setupScene(
+      url,
+      image.width,
+      image.height,
+      depthEstimator,
+      image
+    );
+  }
 
   predictFromFile(file: File) {
     const reader = new FileReader();
@@ -65,7 +79,13 @@ export class DepthEstimationService {
     container.appendChild(img);
   }
 
-  private async setupScene(url: string, w: number, h: number, depthEstimator: any, image: any) {
+  private async setupScene(
+    url: string,
+    w: number,
+    h: number,
+    depthEstimator: any,
+    image: any
+  ) {
     const container = document.getElementById('container');
     if (!container) return;
 
@@ -119,13 +139,17 @@ export class DepthEstimationService {
       this.controls.update();
     });
 
-    window.addEventListener('resize', () => {
-      const width = container.offsetWidth;
-      const height = container.offsetHeight;
-      this.camera.aspect = width / height;
-      this.camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    }, false);
+    window.addEventListener(
+      'resize',
+      () => {
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      },
+      false
+    );
 
     this.setStatus('Analysing...');
     const { depth } = await depthEstimator(image);
@@ -178,14 +202,14 @@ export class DepthEstimationService {
     this.camera.position.y = Math.sin(progress * speed) * 0.5;
     this.camera.updateProjectionMatrix();
     this.controls.update();
-  }
+  };
 
   leftRightMotion = (progress: number) => {
     const speed = 0.1;
     this.camera.position.x = Math.sin(progress * speed) * 0.5;
     this.camera.updateProjectionMatrix();
     this.controls.update();
-  }
+  };
 
   circularMotion = (progress: number) => {
     const speed = 0.1;
@@ -193,12 +217,32 @@ export class DepthEstimationService {
     this.camera.position.z = Math.cos(progress * speed) * 0.5;
     this.camera.updateProjectionMatrix();
     this.controls.update();
-  }
+  };
 
   dollyMotion = (progress: number) => {
     const speed = 0.1;
     this.camera.position.z = Math.sin(progress * speed) * 0.5 + 2;
     this.camera.updateProjectionMatrix();
     this.controls.update();
+  };
+
+  setMotionAmount(value: number) {
+    this.motionAmount = value;
+    // Add logic to update the motion amount in your application
+  }
+
+  setAnimationLength(value: number) {
+    this.animationLength = value;
+    // Add logic to update the animation length in your application
+  }
+
+  setFocusPoint(value: number) {
+    this.focusPoint = value;
+    // Add logic to update the focus point in your application
+  }
+
+  setEdgeDilation(value: number) {
+    this.edgeDilation = value;
+    // Add logic to update the edge dilation in your application
   }
 }
