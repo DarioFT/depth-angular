@@ -27,7 +27,8 @@ export class DepthEstimationService {
     this.setStatus('Ready');
 
     const image = await RawImage.fromURL(url);
-    this.setupScene(url, image.width, image.height, depthEstimator, image);
+    this.displayImage(url);
+    await this.setupScene(url, image.width, image.height, depthEstimator, image);
   }
 
   predictFromFile(file: File) {
@@ -43,11 +44,26 @@ export class DepthEstimationService {
     this.statusSubject.next(status);
   }
 
-  private setupScene(url: string, w: number, h: number, depthEstimator: any, image: any) {
+  private displayImage(url: string) {
     const container = document.getElementById('container');
     if (!container) return;
 
     container.innerHTML = ''; // Clear previous content
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'contain';
+
+    container.appendChild(img);
+  }
+
+  private async setupScene(url: string, w: number, h: number, depthEstimator: any, image: any) {
+    const container = document.getElementById('container');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear the image
+
     const canvas = document.createElement('canvas');
     const width = container.offsetWidth;
     const height = container.offsetHeight;
@@ -104,12 +120,10 @@ export class DepthEstimationService {
       renderer.setSize(width, height);
     }, false);
 
-    (async () => {
-      this.setStatus('Analysing...');
-      const { depth } = await depthEstimator(image);
-      setDisplacementMap(depth.toCanvas());
-      this.setStatus('');
-    })();
+    this.setStatus('Analysing...');
+    const { depth } = await depthEstimator(image);
+    setDisplacementMap(depth.toCanvas());
+    this.setStatus('');
 
     container.appendChild(renderer.domElement);
   }
