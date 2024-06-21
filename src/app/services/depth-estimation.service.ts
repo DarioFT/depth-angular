@@ -18,6 +18,8 @@ export class DepthEstimationService {
   animationId: number | null = null;
 
   onDisplacementScaleChange!: (value: number) => void;
+  onAnimationLengthChange!: (value: number) => void;
+
   private motionAmount = 40;
   private animationLength = 4;
   private focusPoint = 50;
@@ -29,6 +31,7 @@ export class DepthEstimationService {
   constructor() {
     env.allowLocalModels = false;
     env.backends.onnx.wasm.proxy = true;
+    this.onAnimationLengthChange = this.setAnimationLength.bind(this);
   }
 
   async predictFromUrl(url: string) {
@@ -198,7 +201,7 @@ export class DepthEstimationService {
     let start: number | null = null;
     const step = (timestamp: number) => {
       if (!start) start = timestamp;
-      const progress = (timestamp - start) / 1000;
+      const progress = (timestamp - start) / (1000 * this.animationLength);
       motionFunction(progress);
       this.animationId = requestAnimationFrame(step);
     };
@@ -241,7 +244,7 @@ export class DepthEstimationService {
 
   setAnimationLength(value: number) {
     this.animationLength = value;
-    // Add logic
+    // Additional logic can be added here if necessary
   }
 
   setFocusPoint(value: number) {

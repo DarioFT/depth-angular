@@ -27,11 +27,11 @@ import { customIcons } from '../../models/custom-icons';
 })
 export class PresetMenuComponent {
   motionAmount: number = 40;
-  animationLength: number = 4;
   focusPoint: number = 50;
   edgeDilation: number = 0;
-  displacementScale: number = 0.75; // Add this property
 
+  displacementScale: number = 0.75;
+  animationLength: number = 4;
 
   constructor(
     private depthEstimationService: DepthEstimationService,
@@ -59,7 +59,7 @@ export class PresetMenuComponent {
   }
 
   onAnimationLengthChange(value: number) {
-    this.depthEstimationService.setAnimationLength(value);
+    this.depthEstimationService.onAnimationLengthChange(value);
   }
 
   onFocusPointChange(value: number) {
