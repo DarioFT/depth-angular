@@ -1,24 +1,20 @@
-#preset-menu {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  #preset-menu button {
-    display: block;
-    margin-bottom: 5px;
-    padding: 10px;
-    color: white;
-    background-color: #333;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  #preset-menu button:hover {
-    background-color: #555;
-  }
-  
+mat-expansion-panel {
+  background: #444; /* Adjust the color as needed */
+  color: #fff;
+}
+
+mat-expansion-panel-header {
+  color: #fff;
+}
+
+button {
+  display: block;
+  margin: 5px 0;
+  width: 100%;
+  color: #fff;
+  background-color: #555; /* Adjust the color as needed */
+}
+
+button:hover {
+  background-color: #777; /* Adjust the color as needed */
+}

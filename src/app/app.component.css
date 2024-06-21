@@ -1,0 +1,19 @@
+.main-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .content-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .sidebar {
+    width: 300px;
+    background: #333; /* Adjust the color as needed */
+    color: #fff;
+    padding: 10px;
+  }
+  

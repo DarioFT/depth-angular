@@ -1,7 +1,18 @@
-<div id="preset-menu">
-    <button mat-button (click)="startMovement('upDown')">Up Down</button>
-    <button mat-button (click)="startMovement('leftRight')">Left Right</button>
-    <button mat-button (click)="startMovement('circular')">Circular</button>
-    <button mat-button (click)="startMovement('dolly')">Dolly</button>
-  </div>
-  
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Animation Style
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div>
+      <button mat-button (click)="startMovement('upDown')">Up Down</button>
+      <button mat-button (click)="startMovement('leftRight')">Left Right</button>
+      <button mat-button (click)="startMovement('circular')">Circular</button>
+      <button mat-button (click)="startMovement('dolly')">Dolly</button>
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Add more panels as needed -->
+
+</mat-accordion>
