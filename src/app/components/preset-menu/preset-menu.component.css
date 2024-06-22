@@ -13,14 +13,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: 96px;
+  height: 96px;
   background-color: #d3d3d3;
-  border-radius: 5px;
+  border-radius: 9px;
 }
 
 button:hover {
   background-color: #777;
+}
+
+.preset-buttons mat-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.toggle-buttons {
+  margin-bottom: 1rem;
 }
 
 .toggle-container {
