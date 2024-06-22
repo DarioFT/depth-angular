@@ -33,6 +33,8 @@ export class PresetMenuComponent {
   displacementScale: number = 0.75;
   animationLength: number = 4;
 
+  recording = false;
+
   constructor(
     private depthEstimationService: DepthEstimationService,
     iconRegistry: MatIconRegistry,
@@ -44,6 +46,15 @@ export class PresetMenuComponent {
         sanitizer.bypassSecurityTrustResourceUrl(icon.path)
       );
     });
+  }
+
+  toggleGIFRecording() {
+    if (this.recording) {
+      this.depthEstimationService.stopGIFRecording();
+    } else {
+      this.depthEstimationService.startGIFRecording();
+    }
+    this.recording = !this.recording;
   }
 
   startMovement(preset: string) {

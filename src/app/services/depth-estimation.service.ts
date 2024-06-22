@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { BehaviorSubject } from 'rxjs';
 import { pipeline, env, RawImage } from '@xenova/transformers';
+import { CanvasCapture } from 'canvas-capture';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +22,15 @@ export class DepthEstimationService {
   onAnimationLengthChange!: (value: number) => void;
 
   private motionAmount = 40;
-  private animationLength = 3;
+  private animationLength = 4; // Default length
   private focusPoint = 50;
   private edgeDilation = 0;
 
   private imageDimensionsSource = new BehaviorSubject<{ width: number, height: number }>({ width: 0, height: 0 });
   imageDimensions$ = this.imageDimensionsSource.asObservable();
+
+  private renderer!: THREE.WebGLRenderer;
+  private recording = false;
 
   constructor() {
     env.allowLocalModels = false;
@@ -111,9 +115,9 @@ export class DepthEstimationService {
     this.camera.position.z = 2;
     scene.add(this.camera);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
 
     const light = new THREE.AmbientLight(0xffffff, 3);
     scene.add(light);
@@ -142,12 +146,16 @@ export class DepthEstimationService {
     const plane = new THREE.Mesh(geometry, material);
     scene.add(plane);
 
-    this.controls = new OrbitControls(this.camera, renderer.domElement);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
 
-    renderer.setAnimationLoop(() => {
-      renderer.render(scene, this.camera);
+    this.renderer.setAnimationLoop(() => {
+      this.renderer.render(scene, this.camera);
       this.controls.update();
+      CanvasCapture.checkHotkeys();  // Check for hotkey events in the render loop
+      if (CanvasCapture.isRecording()) {
+        CanvasCapture.recordFrame();
+      }
     });
 
     window.addEventListener(
@@ -157,7 +165,7 @@ export class DepthEstimationService {
         const height = container.offsetHeight;
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
+        this.renderer.setSize(width, height);
       },
       false
     );
@@ -167,7 +175,21 @@ export class DepthEstimationService {
     setDisplacementMap(depth.toCanvas());
     this.setStatus('');
 
-    container.appendChild(renderer.domElement);
+    container.appendChild(this.renderer.domElement);
+
+    // Initialize CanvasCapture and bind keys
+    CanvasCapture.init(this.renderer.domElement, { showRecDot: true });
+    CanvasCapture.bindKeyToVideoRecord('v', {
+      format: CanvasCapture.MP4,
+      name: 'myVideo',
+      quality: 0.6,
+    });
+    CanvasCapture.bindKeyToGIFRecord('g');
+    CanvasCapture.bindKeyToPNGSnapshot('p');
+    CanvasCapture.bindKeyToJPEGSnapshot('j', {
+      name: 'myJpeg',
+      quality: 0.8,
+    });
   }
 
   startCameraMovement(preset: string) {
@@ -255,5 +277,37 @@ export class DepthEstimationService {
   setEdgeDilation(value: number) {
     this.edgeDilation = value;
     // Add logic
+  }
+
+  startRecording() {
+    CanvasCapture.beginVideoRecord({ format: CanvasCapture.MP4, name: 'myVideo', quality: 0.6 });
+    this.recording = true;
+  }
+
+  stopRecording() {
+    if (this.recording) {
+      CanvasCapture.stopRecord().then(() => {
+        this.recording = false;
+      });
+    }
+  }
+
+  startGIFRecording() {
+    try {
+      CanvasCapture.beginGIFRecord({ name: 'myGif', fps: 10 });
+      this.recording = true;
+    } catch (error) {
+      console.error('Error starting GIF recording:', error);
+    }
+  }
+
+  stopGIFRecording() {
+    if (this.recording) {
+      CanvasCapture.stopRecord().then(() => {
+        this.recording = false;
+      }).catch(error => {
+        console.error('Error stopping GIF recording:', error);
+      });
+    }
   }
 }
