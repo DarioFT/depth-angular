@@ -1,5 +1,5 @@
 <div>
-  <button mat-raised-button color="primary" (click)="toggleGIFRecording()">
+  <button class="recording-button" mat-raised-button color="primary" (click)="toggleGIFRecording()">
     {{ recording ? 'Stop Recording' : 'Start Recording' }}
   </button>
 </div>
@@ -14,11 +14,11 @@
     </mat-expansion-panel-header>
     <div class="toggle-container">
       <span>Loop</span>
-      <mat-slide-toggle></mat-slide-toggle>
+      <mat-slide-toggle [disabled]="true"></mat-slide-toggle>
     </div>
     <div class="toggle-container">
       <span>Reverse</span>
-      <mat-slide-toggle></mat-slide-toggle>
+      <mat-slide-toggle [disabled]="true"></mat-slide-toggle>
     </div>
     <div class="preset-buttons">
       <button mat-button (click)="startMovement('upDown')">
