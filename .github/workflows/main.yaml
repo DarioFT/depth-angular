@@ -21,9 +21,14 @@ jobs:
       - name: Build Angular App
         run: npm run build
       
+      - name: Configure Git
+        run: |
+          git config --global user.email "DarioFT@users.noreply.github.com"
+          git config --global user.name "DarioFT"
+      
       - name: Deploy to gh pages
         env:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npx angular-cli-ghpages --dir=dist/depth-angular --no-silent 
+          npx angular-cli-ghpages --dir=dist/depth-angular --no-silent
