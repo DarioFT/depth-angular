@@ -15,15 +15,11 @@ jobs:
         with:
           node-version: 20
       
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli
-      
       - name: Install Dependencies
         run: npm install
       
       - name: Build Angular App
-        run: |
-          ng build --prod --base-href /depth-angular/
+        run: npm run build
       
       - name: Configure Git
         run: |
@@ -35,4 +31,4 @@ jobs:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npx angular-cli-ghpages --dir=dist/depth-angular --no-silent
+          npx angular-cli-ghpages --dir=dist/depth-angular --base-href /depth-angular/
