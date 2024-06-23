@@ -31,4 +31,4 @@ jobs:
           CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npx angular-cli-ghpages --dir=dist/depth-angular --base-href /depth-angular/
+          npx angular-cli-ghpages --dir=dist/depth-angular --no-silent
