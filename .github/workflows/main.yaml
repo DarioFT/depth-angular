@@ -19,7 +19,8 @@ jobs:
         run: npm install
       
       - name: Build Angular App
-        run: npm run build
+        run: |
+          ng build --prod --base-href /depth-angular/
       
       - name: Configure Git
         run: |
